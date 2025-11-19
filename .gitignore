@@ -71,6 +71,7 @@ docker/
 *.pid
 # IDE Configurations
 idea/
+.idea/
 vscode/
 *.iml
 # Logs and Temporary Files

@@ -37,3 +37,4 @@ if __name__ == "__main__":
 
     # Render the environment
     env.render(animation_interval=2)
+input("Press Enter to exit...")

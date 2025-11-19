@@ -4,15 +4,10 @@ import sys
 sys.path.append("..")  
 from pathlib import Path
 
-# Ensure project root (one level up) is on sys.path so `from src.grid_world import GridWorld` works
-# This is more robust than a plain `sys.path.append("..")` because it uses an absolute path.
-project_root = Path(__file__).resolve().parent.parent
-if str(project_root) not in sys.path:
-    sys.path.insert(0, str(project_root))
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches          
-from examples.arguments import args           
+from src.arguments import args           
 
 class GridWorld():
 
