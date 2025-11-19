@@ -38,6 +38,9 @@ class GridWorld():
         self.color_trajectory = (0, 1, 0)
         self.color_agent = (0,0,1)
 
+        self.state_values = None
+        self.policy = None
+
 
 
     def reset(self):
@@ -96,7 +99,7 @@ class GridWorld():
         return state == self.target_state
     
 
-    def render(self, animation_interval=args.animation_interval):
+    def render(self, animation_interval=args.animation_interval, is_ipynb = False):
         '''
         Update the rendering of the environment.
         '''
@@ -134,19 +137,26 @@ class GridWorld():
         self.agent_star.set_data([self.agent_state[0]],[self.agent_state[1]])       
         traj_x, traj_y = zip(*self.traj)         
         self.traj_obj.set_data(traj_x, traj_y)
-
+        if is_ipynb:
+            self.add_state_values(self.state_values)
+            self.add_policy(self.policy)
         plt.draw()
         plt.pause(animation_interval)
         if args.debug:
-            input('press Enter to continue...')     
+            input('press Enter to continue...')
+
+
 
 
  
-    def add_policy(self, policy_matrix):
+    def add_policy(self, policy_matrix, is_ipynb = False):
         '''
             policy_matrix: 2D array-like
             shape of policy_matrix: (num_states, num_actions), from left top to right bottom
-        '''                  
+        '''
+        if is_ipynb:
+            self.policy = policy_matrix
+            return;
         for state, state_action_group in enumerate(policy_matrix):    
             x = state % self.env_size[0]
             y = state // self.env_size[0]
@@ -158,11 +168,14 @@ class GridWorld():
                     else:
                         self.ax.add_patch(patches.Circle((x, y), radius=0.07, facecolor=self.color_policy, edgecolor=self.color_policy, linewidth=1, fill=False))
     
-    def add_state_values(self, values, precision=1):
+    def add_state_values(self, values, precision=1, is_ipynb = False):
         '''
             values: iterable
             shape of values: (num_states,), from left top to right bottom.
         '''
+        if is_ipynb:
+            self.state_values = values
+            return;
         values = np.round(values, precision)
         for i, value in enumerate(values):
             x = i % self.env_size[0]
